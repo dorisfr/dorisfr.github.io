@@ -41,11 +41,19 @@
         const app = initializeApp(firebaseConfig);
         const database =getDatabase(app);
         //configurar el boton
-        window.(crearRegistro) = function(){
+        window.crearRegistro = function(){
             const nombre = document.getElementById("Nombre").value;
             const edad = document.getElementById("Edad").value;
 
             console.log(nombre, edad);
+
+            push(
+                ref(database, 'septimo'),
+                {
+                    name: nombre,
+                    age: edad
+                }
+            );
         }
       </script>
 </body>
