@@ -3,158 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Productos en Ferretería</title>
+    <title>Inicio</title>
 </head>
 <body>
     <header class="cabecera">
         <section id="texto1" >
             <div class="contenedor">
-                <a href="index.html" title="Página de inicio">
-                   <img class="logo" src="img/logo.jpg" alt="Tecnología innovando en el mundo">
+                <a href="index.html" title="Pagina de inicio">
+                   <img class="logo" src="img/logo.jpg" alt="Technologia inovando en el mundo">
                 </a>
                 <nav class="Menu2">
-                    <a href="inicio.html">Inicio</a>
-                    <a href="contacto.html">Contacto</a>
+                    <a href="inicio.html">Incio</a>
+                    <a href="contacto.html">Contactos</a>
                     <a href="servicios.html">Servicios</a>
                     <a href="ubicacion.html">Ubicación</a>
-                    <a href="galeria.html">Galería</a>                
+                    <a href="galeria.html">Galeria</a>                
                 </nav>
             </div>
         </section>
     </header>
-    <h1>Gestión de Productos en Ferretería</h1>
+    <h1>Hola Mundo</h1>
     <form id="crud-form">
-        <label for="nombre">Nombre del Producto:</label>
-        <input type="text" id="nombre">
-        <label for="categoria">Categoría:</label>
-        <input type="text" id="categoria">
-        <label for="marca">Marca:</label>
-        <input type="text" id="marca">
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" rows="1"></textarea>
-        <label for="precio">Precio:</label>
-        <input type="number" id="precio" min="0" step="0.01" required>
-        <label for="cantidad">Cantidad en Stock:</label>
-        <input type="number" id="cantidad" min="0" required>
-        <button type="button" id="btnAgregar">Agregar Producto</button>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id = "nombre">
+        <label for="edad">Edad:</label>
+        <input type="number" id = "edad">
+        <button type="button" onclick="crearRegistro()">Crear</button>
     </form>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Marca</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Cantidad en Stock</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="tabla-body"></tbody>
-    </table>
-
     <script type="module">
+        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-
-        // Tu configuración de Firebase
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyBB4VLEuWx4O57s4dfu9ii0BWLWJT33x58",
-            authDomain: "proyectofari.firebaseapp.com",
-            databaseURL: "https://proyectofari-default-rtdb.firebaseio.com",
-            projectId: "proyectofari",
-            storageBucket: "proyectofari.appspot.com",
-            messagingSenderId: "538414020531",
-            appId: "1:538414020531:web:08051bd59c98626d6a3dc6"
+        apiKey: "AIzaSyBB4VLEuWx4O57s4dfu9ii0BWLWJT33x58",
+        authDomain: "proyectofari.firebaseapp.com",
+        databaseURL: "https://proyectofari-default-rtdb.firebaseio.com",
+        projectId: "proyectofari",
+        storageBucket: "proyectofari.appspot.com",
+        messagingSenderId: "538414020531",
+        appId: "1:538414020531:web:08051bd59c98626d6a3dc6"
         };
 
-        // Inicializar Firebase
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Definir funciones antes del evento DOMContentLoaded
-        function agregarProducto() {
-            const nombre = document.getElementById("nombre").value;
-            const categoria = document.getElementById("categoria").value;
-            const marca = document.getElementById("marca").value;
-            const descripcion = document.getElementById("descripcion").value;
-            const precio = document.getElementById("precio").value;
-            const cantidad = document.getElementById("cantidad").value;
+            window.crearRegistro = function () {
+                const nombre = document.getElementById("nombre").value;
+                const edad = document.getElementById("edad").value;
+                console.log(nombre, edad);
+                
+                push(
+                    ref(database, 'septimo'),
+                    {
+                        name: nombre,
+                        age: edad 
+                    }
+                );
 
-            push(
-                ref(database, 'productos'),
-                {
-                    nombre: nombre,
-                    categoria: categoria,
-                    marca: marca,
-                    descripcion: descripcion,
-                    precio: precio,
-                    cantidad: cantidad
-                }
-            );
-        }
-
-        function editarProducto(event) {
-            const key = event.target.dataset.key;
-            const productoRef = ref(database, `productos/${key}`);
-            onValue(productoRef, (snapshot) => {
-                const producto = snapshot.val();
-
-                document.getElementById('nombre').value = producto.nombre;
-                document.getElementById('categoria').value = producto.categoria;
-                document.getElementById('marca').value = producto.marca;
-                document.getElementById('descripcion').value = producto.descripcion;
-                document.getElementById('precio').value = producto.precio;
-                document.getElementById('cantidad').value = producto.cantidad;
-            });
-        }
-
-        function eliminarProducto(event) {
-            const key = event.target.dataset.key;
-            const productoRef = ref(database, `productos/${key}`);
-            remove(productoRef);
-        }
-
-        // Agregar eventos después de que el DOM esté completamente cargado
-        document.addEventListener('DOMContentLoaded', () => {
-            const btnAgregar = document.getElementById('btnAgregar');
-            btnAgregar.addEventListener('click', agregarProducto);
-
-            onValue(ref(database, 'productos'), (snapshot) => {
-                renderizarTabla(snapshot.val());
-            });
-        });
-
-        function renderizarTabla(productos) {
-            const tablaBody = document.getElementById('tabla-body');
-            tablaBody.innerHTML = "";
-
-            for (const key in productos) {
-                if (Object.hasOwnProperty.call(productos, key)) {
-                    const producto = productos[key];
-
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${producto.nombre}</td>
-                        <td>${producto.categoria}</td>
-                        <td>${producto.marca}</td>
-                        <td>${producto.descripcion}</td>
-                        <td>${producto.precio}</td>
-                        <td>${producto.cantidad}</td>
-                        <td>
-                            <button data-key="${key}" class="editar-btn">Editar</button>
-                            <button data-key="${key}" class="eliminar-btn">Eliminar</button>
-                        </td>
-                    `;
-
-                    fila.querySelector('.editar-btn').addEventListener('click', editarProducto);
-                    fila.querySelector('.eliminar-btn').addEventListener('click', eliminarProducto);
-
-                    tablaBody.appendChild(fila);
-                }
             }
-        }
-    </script>
+      </script>
 </body>
 </html>
