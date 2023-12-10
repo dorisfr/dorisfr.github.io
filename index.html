@@ -80,6 +80,28 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
+    // Mueve la declaración fuera del bloque DOMContentLoaded
+    function agregarProducto() {
+        const nombre = document.getElementById("nombre").value;
+        const categoria = document.getElementById("categoria").value;
+        const marca = document.getElementById("marca").value;
+        const descripcion = document.getElementById("descripcion").value;
+        const precio = document.getElementById("precio").value;
+        const cantidad = document.getElementById("cantidad").value;
+
+        push(
+            ref(database, 'productos'),
+            {
+                nombre: nombre,
+                categoria: categoria,
+                marca: marca,
+                descripcion: descripcion,
+                precio: precio,
+                cantidad: cantidad
+            }
+        );
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         const btnAgregar = document.getElementById('btnAgregar');
         btnAgregar.addEventListener('click', agregarProducto);
@@ -117,27 +139,6 @@
                 tablaBody.appendChild(fila);
             }
         }
-    }
-
-    function agregarProducto() {
-        const nombre = document.getElementById("nombre").value;
-        const categoria = document.getElementById("categoria").value;
-        const marca = document.getElementById("marca").value;
-        const descripcion = document.getElementById("descripcion").value;
-        const precio = document.getElementById("precio").value;
-        const cantidad = document.getElementById("cantidad").value;
-
-        push(
-            ref(database, 'productos'),
-            {
-                nombre: nombre,
-                categoria: categoria,
-                marca: marca,
-                descripcion: descripcion,
-                precio: precio,
-                cantidad: cantidad
-            }
-        );
     }
 
     function editarProducto(event) {
