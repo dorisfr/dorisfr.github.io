@@ -128,6 +128,15 @@
             const btnAgregar = document.getElementById('btnAgregar');
             btnAgregar.addEventListener('click', agregarComputadora);
 
+            const tablaBody = document.getElementById('tabla-body');
+            tablaBody.addEventListener('click', (event) => {
+                if (event.target.classList.contains('editar-btn')) {
+                    editarComputadora(event);
+                } else if (event.target.classList.contains('eliminar-btn')) {
+                    eliminarComputadora(event);
+                }
+            });
+
             onValue(ref(database, 'computadoras'), (snapshot) => {
                 renderizarTabla(snapshot.val());
             });
@@ -155,9 +164,6 @@
                             <button data-key="${key}" class="eliminar-btn">Eliminar</button>
                         </td>
                     `;
-
-                    fila.querySelector('.editar-btn').addEventListener('click', editarComputadora);
-                    fila.querySelector('.eliminar-btn').addEventListener('click', eliminarComputadora);
 
                     tablaBody.appendChild(fila);
                 }
