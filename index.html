@@ -19,19 +19,19 @@
     <h1>Gestión de Ventas de Computadoras</h1>
     <form id="crud-form">
         <label for="modelo">Modelo de Computadora:</label>
-        <input type="text" id="modelo">
+        <input type="text" id="modelo"><br><br>
         <label for="marca">Marca:</label>
-        <input type="text" id="marca">
+        <input type="text" id="marca"><br><br>
         <label for="procesador">Procesador:</label>
-        <input type="text" id="procesador">
+        <input type="text" id="procesador"><br><br>
         <label for="almacenamiento">Almacenamiento (GB):</label>
-        <input type="number" id="almacenamiento" min="0" required>
+        <input type="number" id="almacenamiento" min="0" required><br><br>
         <label for="ram">RAM (GB):</label>
-        <input type="number" id="ram" min="0" required>
+        <input type="number" id="ram" min="0" required><br><br>
         <label for="precio">Precio:</label>
-        <input type="number" id="precio" min="0" step="0.01" required>
+        <input type="number" id="precio" min="0" step="0.01" required><br><br>
         <label for="cantidad">Cantidad en Stock:</label>
-        <input type="number" id="cantidad" min="0" required>
+        <input type="number" id="cantidad" min="0" required><br><br>
         <button type="button" id="btnAgregar">Agregar Computadora</button>
     </form>
 
@@ -145,13 +145,13 @@
 
                     const fila = document.createElement('tr');
                     fila.innerHTML = `
-                        <td>${computadora.modelo}</td><br><br>
-                        <td>${computadora.marca}</td> <br><br>
-                        <td>${computadora.procesador}</td><br><br>
-                        <td>${computadora.almacenamiento}</td><br><br>
-                        <td>${computadora.ram}</td><br><br>
-                        <td>${computadora.precio}</td><br><br>
-                        <td>${computadora.cantidad}</td><br><br>
+                        <td>${computadora.modelo}</td>
+                        <td>${computadora.marca}</td>
+                        <td>${computadora.procesador}</td>
+                        <td>${computadora.almacenamiento}</td>
+                        <td>${computadora.ram}</td>
+                        <td>${computadora.precio}</td>
+                        <td>${computadora.cantidad}</td>
                         <td>
                             <button data-key="${key}" class="editar-btn">Editar</button>
                             <button data-key="${key}" class="eliminar-btn">Eliminar</button>
