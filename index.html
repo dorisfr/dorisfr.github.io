@@ -62,12 +62,12 @@
         <tbody id="tabla-body"></tbody>
     </table>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
         apiKey: "AIzaSyBB4VLEuWx4O57s4dfu9ii0BWLWJT33x58",
         authDomain: "proyectofari.firebaseapp.com",
         databaseURL: "https://proyectofari-default-rtdb.firebaseio.com",
@@ -75,78 +75,92 @@
         storageBucket: "proyectofari.appspot.com",
         messagingSenderId: "538414020531",
         appId: "1:538414020531:web:08051bd59c98626d6a3dc6"
-        };
+    };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
 
-        function agregarProducto() {
-            const nombre = document.getElementById("nombre").value;
-            const categoria = document.getElementById("categoria").value;
-            const marca = document.getElementById("marca").value;
-            const descripcion = document.getElementById("descripcion").value;
-            const precio = document.getElementById("precio").value;
-            const cantidad = document.getElementById("cantidad").value;
+    document.addEventListener('DOMContentLoaded', () => {
+        const btnAgregar = document.getElementById('btnAgregar');
+        btnAgregar.addEventListener('click', agregarProducto);
 
-            push(
-                ref(database, 'productos'),
-                {
-                    nombre: nombre,
-                    categoria: categoria,
-                    marca: marca,
-                    descripcion: descripcion,
-                    precio: precio,
-                    cantidad: cantidad
-                }
-            );
-        }
-
-        const tablaBody = document.getElementById('tabla-body');
         onValue(ref(database, 'productos'), (snapshot) => {
-            tablaBody.innerHTML = "";
-            const productos = snapshot.val();
-            for (const key in productos) {
-                if (Object.hasOwnProperty.call(productos, key)) {
-                    const producto = productos[key];
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${producto.nombre}</td>
-                        <td>${producto.categoria}</td>
-                        <td>${producto.marca}</td>
-                        <td>${producto.descripcion}</td>
-                        <td>${producto.precio}</td>
-                        <td>${producto.cantidad}</td>
-                        <td>
-                            <button onclick="editarProducto('${key}')">Editar</button>
-                            <button onclick="eliminarProducto('${key}')">Eliminar</button>
-                        </td>
-                    `;
-                    tablaBody.appendChild(fila);
-                }
-            }
+            renderizarTabla(snapshot.val());
         });
+    });
 
-        function editarProducto(key) {
-            const productoRef = ref(database, `productos/${key}`);
-            onValue(productoRef, (snapshot) => {
-                const producto = snapshot.val();
+    function renderizarTabla(productos) {
+        const tablaBody = document.getElementById('tabla-body');
+        tablaBody.innerHTML = "";
 
-                document.getElementById('nombre').value = producto.nombre;
-                document.getElementById('categoria').value = producto.categoria;
-                document.getElementById('marca').value = producto.marca;
-                document.getElementById('descripcion').value = producto.descripcion;
-                document.getElementById('precio').value = producto.precio;
-                document.getElementById('cantidad').value = producto.cantidad;
+        for (const key in productos) {
+            if (Object.hasOwnProperty.call(productos, key)) {
+                const producto = productos[key];
 
-                remove(productoRef);
-            });
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${producto.nombre}</td>
+                    <td>${producto.categoria}</td>
+                    <td>${producto.marca}</td>
+                    <td>${producto.descripcion}</td>
+                    <td>${producto.precio}</td>
+                    <td>${producto.cantidad}</td>
+                    <td>
+                        <button data-key="${key}" class="editar-btn">Editar</button>
+                        <button data-key="${key}" class="eliminar-btn">Eliminar</button>
+                    </td>
+                `;
+
+                fila.querySelector('.editar-btn').addEventListener('click', editarProducto);
+                fila.querySelector('.eliminar-btn').addEventListener('click', eliminarProducto);
+
+                tablaBody.appendChild(fila);
+            }
         }
+    }
 
-        function eliminarProducto(key) {
-            const productoRef = ref(database, `productos/${key}`);
-            remove(productoRef);
-        }
-    </script>
+    function agregarProducto() {
+        const nombre = document.getElementById("nombre").value;
+        const categoria = document.getElementById("categoria").value;
+        const marca = document.getElementById("marca").value;
+        const descripcion = document.getElementById("descripcion").value;
+        const precio = document.getElementById("precio").value;
+        const cantidad = document.getElementById("cantidad").value;
+
+        push(
+            ref(database, 'productos'),
+            {
+                nombre: nombre,
+                categoria: categoria,
+                marca: marca,
+                descripcion: descripcion,
+                precio: precio,
+                cantidad: cantidad
+            }
+        );
+    }
+
+    function editarProducto(event) {
+        const key = event.target.dataset.key;
+        const productoRef = ref(database, `productos/${key}`);
+        onValue(productoRef, (snapshot) => {
+            const producto = snapshot.val();
+
+            document.getElementById('nombre').value = producto.nombre;
+            document.getElementById('categoria').value = producto.categoria;
+            document.getElementById('marca').value = producto.marca;
+            document.getElementById('descripcion').value = producto.descripcion;
+            document.getElementById('precio').value = producto.precio;
+            document.getElementById('cantidad').value = producto.cantidad;
+        });
+    }
+
+    function eliminarProducto(event) {
+        const key = event.target.dataset.key;
+        const productoRef = ref(database, `productos/${key}`);
+        remove(productoRef);
+    }
+</script>
 </body>
 </html>
