@@ -104,7 +104,9 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         const btnAgregar = document.getElementById('btnAgregar');
-        btnAgregar.addEventListener('click', agregarProducto);
+        if (btnAgregar) {
+            btnAgregar.addEventListener('click', agregarProducto);
+        }
 
         onValue(ref(database, 'productos'), (snapshot) => {
             renderizarTabla(snapshot.val());
