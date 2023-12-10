@@ -107,16 +107,15 @@
             onValue(computadoraRef, (snapshot) => {
                 const computadora = snapshot.val();
 
-                document.getElementById('modelo').value = computadora.modelo;
-                document.getElementById('marca').value = computadora.marca;
-                document.getElementById('procesador').value = computadora.procesador;
-                document.getElementById('almacenamiento').value = computadora.almacenamiento;
-                document.getElementById('ram').value = computadora.ram;
-                document.getElementById('precio').value = computadora.precio;
-                document.getElementById('cantidad').value = computadora.cantidad;
+                document.getElementById('modelo').value = computadora?.modelo || '';
+                document.getElementById('marca').value = computadora?.marca || '';
+                document.getElementById('procesador').value = computadora?.procesador || '';
+                document.getElementById('almacenamiento').value = computadora?.almacenamiento || '';
+                document.getElementById('ram').value = computadora?.ram || '';
+                document.getElementById('precio').value = computadora?.precio || '';
+                document.getElementById('cantidad').value = computadora?.cantidad || '';
             });
         }
-
         function eliminarComputadora(event) {
             const key = event.target.dataset.key;
             const computadoraRef = ref(database, `computadoras/${key}`);
