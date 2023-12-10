@@ -3,70 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>Gestión de Ventas de Computadoras</title>
 </head>
 <body>
     <header class="cabecera">
-        <section id="texto1" >
+        <section id="texto1">
             <div class="contenedor">
-                <a href="index.html" title="Pagina de inicio">
-                   <img class="logo" src="img/logo.jpg" alt="Technologia inovando en el mundo">
+                <a href="index.html" title="Página de inicio">
+                   <img class="logo" src="img/logo.jpg" alt="Tecnología innovando en el mundo">
                 </a>
                 <nav class="Menu2">
-                    <a href="inicio.html">Incio</a>
-                    <a href="contacto.html">Contactos</a>
+                    <a href="inicio.html">Inicio</a>
+                    <a href="contacto.html">Contacto</a>
                     <a href="servicios.html">Servicios</a>
                     <a href="ubicacion.html">Ubicación</a>
-                    <a href="galeria.html">Galeria</a>                
+                    <a href="galeria.html">Galería</a>                
                 </nav>
             </div>
         </section>
     </header>
-    <h1>Hola Mundo</h1>
+    <h1>Gestión de Ventas de Computadoras</h1>
     <form id="crud-form">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id = "nombre">
-        <label for="edad">Edad:</label>
-        <input type="number" id = "edad">
-        <button type="button" onclick="crearRegistro()">Crear</button>
+        <label for="modelo">Modelo de Computadora:</label>
+        <input type="text" id="modelo">
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca">
+        <label for="procesador">Procesador:</label>
+        <input type="text" id="procesador">
+        <label for="almacenamiento">Almacenamiento (GB):</label>
+        <input type="number" id="almacenamiento" min="0" required>
+        <label for="ram">RAM (GB):</label>
+        <input type="number" id="ram" min="0" required>
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" min="0" step="0.01" required>
+        <label for="cantidad">Cantidad en Stock:</label>
+        <input type="number" id="cantidad" min="0" required>
+        <button type="button" id="btnAgregar">Agregar Computadora</button>
     </form>
 
+    <table>
+        <thead>
+            <tr>
+                <th>Modelo</th>
+                <th>Marca</th>
+                <th>Procesador</th>
+                <th>Almacenamiento</th>
+                <th>RAM</th>
+                <th>Precio</th>
+                <th>Cantidad en Stock</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-body"></tbody>
+    </table>
+
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
+
+        // Tu configuración de Firebase
         const firebaseConfig = {
-        apiKey: "AIzaSyBB4VLEuWx4O57s4dfu9ii0BWLWJT33x58",
-        authDomain: "proyectofari.firebaseapp.com",
-        databaseURL: "https://proyectofari-default-rtdb.firebaseio.com",
-        projectId: "proyectofari",
-        storageBucket: "proyectofari.appspot.com",
-        messagingSenderId: "538414020531",
-        appId: "1:538414020531:web:08051bd59c98626d6a3dc6"
+            apiKey: "Tu-ApiKey",
+            authDomain: "Tu-Dominio.firebaseapp.com",
+            databaseURL: "https://Tu-Proyecto-default-rtdb.firebaseio.com",
+            projectId: "Tu-Proyecto",
+            storageBucket: "Tu-Proyecto.appspot.com",
+            messagingSenderId: "Tu-SenderId",
+            appId: "Tu-AppId"
         };
 
-        // Initialize Firebase
+        // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-            window.crearRegistro = function () {
-                const nombre = document.getElementById("nombre").value;
-                const edad = document.getElementById("edad").value;
-                console.log(nombre, edad);
-                
-                push(
-                    ref(database, 'septimo'),
-                    {
-                        name: nombre,
-                        age: edad 
-                    }
-                );
+        // Definir funciones antes del evento DOMContentLoaded
+        function agregarComputadora() {
+            const modelo = document.getElementById("modelo").value;
+            const marca = document.getElementById("marca").value;
+            const procesador = document.getElementById("procesador").value;
+            const almacenamiento = document.getElementById("almacenamiento").value;
+            const ram = document.getElementById("ram").value;
+            const precio = document.getElementById("precio").value;
+            const cantidad = document.getElementById("cantidad").value;
 
+            push(
+                ref(database, 'computadoras'),
+                {
+                    modelo: modelo,
+                    marca: marca,
+                    procesador: procesador,
+                    almacenamiento: almacenamiento,
+                    ram: ram,
+                    precio: precio,
+                    cantidad: cantidad
+                }
+            );
+        }
+
+        function editarComputadora(event) {
+            const key = event.target.dataset.key;
+            const computadoraRef = ref(database, `computadoras/${key}`);
+            onValue(computadoraRef, (snapshot) => {
+                const computadora = snapshot.val();
+
+                document.getElementById('modelo').value = computadora.modelo;
+                document.getElementById('marca').value = computadora.marca;
+                document.getElementById('procesador').value = computadora.procesador;
+                document.getElementById('almacenamiento').value = computadora.almacenamiento;
+                document.getElementById('ram').value = computadora.ram;
+                document.getElementById('precio').value = computadora.precio;
+                document.getElementById('cantidad').value = computadora.cantidad;
+            });
+        }
+
+        function eliminarComputadora(event) {
+            const key = event.target.dataset.key;
+            const computadoraRef = ref(database, `computadoras/${key}`);
+            remove(computadoraRef);
+        }
+
+        // Agregar eventos después de que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnAgregar = document.getElementById('btnAgregar');
+            btnAgregar.addEventListener('click', agregarComputadora);
+
+            onValue(ref(database, 'computadoras'), (snapshot) => {
+                renderizarTabla(snapshot.val());
+            });
+        });
+
+        function renderizarTabla(computadoras) {
+            const tablaBody = document.getElementById('tabla-body');
+            tablaBody.innerHTML = "";
+
+            for (const key in computadoras) {
+                if (Object.hasOwnProperty.call(computadoras, key)) {
+                    const computadora = computadoras[key];
+
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${computadora.modelo}</td>
+                        <td>${computadora.marca}</td>
+                        <td>${computadora.procesador}</td>
+                        <td>${computadora.almacenamiento}</td>
+                        <td>${computadora.ram}</td>
+                        <td>${computadora.precio}</td>
+                        <td>${computadora.cantidad}</td>
+                        <td>
+                            <button data-key="${key}" class="editar-btn">Editar</button>
+                            <button data-key="${key}" class="eliminar-btn">Eliminar</button>
+                        </td>
+                    `;
+
+                    fila.querySelector('.editar-btn').addEventListener('click', editarComputadora);
+                    fila.querySelector('.eliminar-btn').addEventListener('click', eliminarComputadora);
+
+                    tablaBody.appendChild(fila);
+                }
             }
-      </script>
+        }
+    </script>
 </body>
 </html>
