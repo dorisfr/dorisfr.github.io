@@ -2,95 +2,149 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SERVICIOS DE PROPUESTA</title>
-    <link href="css/estilos.css" rel="stylesheet" type="text/css">
-    <script src="https://kit.fontawesome.com/0a7397fd85.js" crossorigin="anonymous"></script>
+    <title>Gestión de Productos en Ferretería</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .contenedor {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+        .logo {
+            height: 50px;
+        }
+        .Menu2 {
+            display: flex;
+            gap: 20px;
+        }
+        #crud-form {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <section id="texto1">
-        <header class="cabecera">
+    <header class="cabecera">
+        <section id="texto1">
             <div class="contenedor">
-                <a href="index.html" title="Pagina de inicio">
-                    <img class="logo" src="img/img4.jpg"/>
+                <a href="index.html" title="Página de inicio">
                 </a>
-                <nav class="menu borde-menu">
-                    <a href="index.html">INICIO</a>
-                    <a href="contacto.html">CONTACTO</a>
-                    <a href="servicios.html">SERVICIOS</a>
-                    <a href="ubicacion.html">UBICACION</a>
-                    <a href="galeria.html">GALERIA</a>
-                    <a href="practica.html">PRACTICA</a>
-                </nav>
-                <a href="#" class="icono1"><i class="fa-solid fa-headset"></i></a>
-            </div>
-        </header>
-    </section>
-    <main>
-        <section id="texto1" >
-            <img class="imagen" src="img/img5.jpg">
-            <div class="contenedor">
-                <div class="fila">
-                    <div class="columna columna-50">
-                        <h1>BIENVENIDOS</h1>
-                    </div>
-                    <div class=" menu columna columna-33 estilo1">
-                        <a href="http://www.utc.edu.ec">UNIVERSIDAD TECNICA DE COTOPAXI</a>
-                    </div>
-                </div>
-                <div class="fila">
-                    <div class="columna columna-50">
-                        <h2>VISITA NUESTRA PÁGINA</h2>
-                    </div>
-                    <div class="menu columna columna-33 estilo1">
-                        <a href="https://www.google.com">GOOGLE</a>
-                    </div>
-                </div>
+                
             </div>
         </section>
-        <section id="imagen-fondo" class="texto">
-            <div class="contenedor">
-                <!-- Primera parte imagen grande -->
-                <div class="fila columna">
-                    <div class="columna columna-50 sinPadding" >
-                        <div class="contenedor cuadrado">
-                            <img src="img/img7.jpg"/>
-                        </div>
-                    </div>
+    </header>
+    <h1>Gestión de Productos en Ferretería</h1>
+    <form id="crud-form">
+        <label for="nombre">Nombre del Producto:</label>
+        <input type="text" id="nombre"><br><br>
+        <label for="categoria">Categoría:</label>
+        <input type="text" id="categoria"><br><br>
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca"><br><br>
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" rows="1"></textarea><br><br>
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" min="0" step="0.01" required><br><br>
+        <label for="cantidad">Cantidad en Stock:</label>
+        <input type="number" id="cantidad" min="0" required><br><br>
+        <button type="button" onclick="agregarProducto()">Crear Producto</button>
+        <button type="button" onclick="editarProducto()">Editar Producto</button>
+        <button type="button" onclick="eliminarProducto()">Eliminar Producto</button>
+    </form>
 
-                    <!-- Segunda parte del collage de 4 imagenes -->
-                    <div class="columna columna-50 sinPadding">
-                        <div class="fila">
+    <table>
+        <thead>
+           
+        </thead>
+        <tbody id="tabla-body"></tbody>
+    </table>
 
-                            <div class="columna columna-50 sinPadding" >
-                                <div class="contenedor cuadrado">
-                                    <img src="img/img13.jpg"/>
-                                </div>
-                            </div>
-                            <div class="columna columna-50 sinPadding" >
-                                <div class="contenedor cuadrado">
-                                    <img src="img/img14.jpg"/>
-                                </div>
-                            </div>
-                            <div class="columna columna-50 sinPadding" >
-                                <div class="contenedor cuadrado">
-                                    <img src="img/img10.jpg"/>
-                                </div>
-                            </div>
-                            <div class="columna columna-50 sinPadding" >
-                                <div class="contenedor cuadrado">
-                                    <img src="img/img11.jpg"/>
-                                </div>
-                            </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
-                        </div>
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_DOMINIO.firebaseapp.com",
+            databaseURL: "https://TU_PROYECTO.firebaseio.com",
+            projectId: "TU_PROYECTO",
+            storageBucket: "TU_PROYECTO.appspot.com",
+            messagingSenderId: "TU_MENSAJERIA_ID",
+            appId: "TU_APP_ID"
+        };
 
-                    </div>
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-                </div>
-            </div>
-        </section>
-    </main>
+        function agregarProducto() {
+            const nombre = document.getElementById("nombre").value;
+            const categoria = document.getElementById("categoria").value;
+            const marca = document.getElementById("marca").value;
+            const descripcion = document.getElementById("descripcion").value;
+            const precio = document.getElementById("precio").value;
+            const cantidad = document.getElementById("cantidad").value;
+
+            push(
+                ref(database, 'productos'),
+                {
+                    nombre: nombre,
+                    categoria: categoria,
+                    marca: marca,
+                    descripcion: descripcion,
+                    precio: precio,
+                    cantidad: cantidad
+                }
+            );
+        }
+
+        const tablaBody = document.getElementById('tabla-body');
+        onValue(ref(database, 'productos'), (snapshot) => {
+            tablaBody.innerHTML = "";
+            const productos = snapshot.val();
+            for (const key in productos) {
+                if (Object.hasOwnProperty.call(productos, key)) {
+                    const producto = productos[key];
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${producto.nombre}</td>
+                        <td>${producto.categoria}</td>
+                        <td>${producto.marca}</td>
+                        <td>${producto.descripcion}</td>
+                        <td>${producto.precio}</td>
+                        <td>${producto.cantidad}</td>
+                        <td>
+                            <button onclick="editarProducto('${key}')">Editar</button>
+                            <button onclick="eliminarProducto('${key}')">Eliminar</button>
+                        </td>
+                    `;
+                    tablaBody.appendChild(fila);
+                }
+            }
+        });
+
+        function editarProducto(key) {
+            const productoRef = ref(database, `productos/${key}`);
+            onValue(productoRef, (snapshot) => {
+                const producto = snapshot.val();
+
+                document.getElementById('nombre').value = producto.nombre;
+                document.getElementById('categoria').value = producto.categoria;
+                document.getElementById('marca').value = producto.marca;
+                document.getElementById('descripcion').value = producto.descripcion;
+                document.getElementById('precio').value = producto.precio;
+                document.getElementById('cantidad').value = producto.cantidad;
+
+                remove(productoRef);
+            });
+        }
+
+        function eliminarProducto(key) {
+            const productoRef = ref(database, `productos/${key}`);
+            remove(productoRef);
+        }
+    </script>
 </body>
 </html>
