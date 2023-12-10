@@ -66,16 +66,18 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
+        // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "TU_API_KEY",
-            authDomain: "TU_DOMINIO.firebaseapp.com",
-            databaseURL: "https://TU_PROYECTO.firebaseio.com",
-            projectId: "TU_PROYECTO",
-            storageBucket: "TU_PROYECTO.appspot.com",
-            messagingSenderId: "TU_MENSAJERIA_ID",
-            appId: "TU_APP_ID"
+        apiKey: "AIzaSyBB4VLEuWx4O57s4dfu9ii0BWLWJT33x58",
+        authDomain: "proyectofari.firebaseapp.com",
+        databaseURL: "https://proyectofari-default-rtdb.firebaseio.com",
+        projectId: "proyectofari",
+        storageBucket: "proyectofari.appspot.com",
+        messagingSenderId: "538414020531",
+        appId: "1:538414020531:web:08051bd59c98626d6a3dc6"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
