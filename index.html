@@ -73,45 +73,7 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const btnAgregar = document.getElementById('btnAgregar');
-            btnAgregar.addEventListener('click', agregarProducto);
-
-            onValue(ref(database, 'productos'), (snapshot) => {
-                renderizarTabla(snapshot.val());
-            });
-        });
-
-        function renderizarTabla(productos) {
-            const tablaBody = document.getElementById('tabla-body');
-            tablaBody.innerHTML = "";
-
-            for (const key in productos) {
-                if (Object.hasOwnProperty.call(productos, key)) {
-                    const producto = productos[key];
-
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${producto.nombre}</td>
-                        <td>${producto.categoria}</td>
-                        <td>${producto.marca}</td>
-                        <td>${producto.descripcion}</td>
-                        <td>${producto.precio}</td>
-                        <td>${producto.cantidad}</td>
-                        <td>
-                            <button data-key="${key}" class="editar-btn">Editar</button>
-                            <button data-key="${key}" class="eliminar-btn">Eliminar</button>
-                        </td>
-                    `;
-
-                    fila.querySelector('.editar-btn').addEventListener('click', editarProducto);
-                    fila.querySelector('.eliminar-btn').addEventListener('click', eliminarProducto);
-
-                    tablaBody.appendChild(fila);
-                }
-            }
-        }
-
+        // Definir funciones antes del evento DOMContentLoaded
         function agregarProducto() {
             const nombre = document.getElementById("nombre").value;
             const categoria = document.getElementById("categoria").value;
@@ -152,6 +114,46 @@
             const key = event.target.dataset.key;
             const productoRef = ref(database, `productos/${key}`);
             remove(productoRef);
+        }
+
+        // Agregar eventos después de que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnAgregar = document.getElementById('btnAgregar');
+            btnAgregar.addEventListener('click', agregarProducto);
+
+            onValue(ref(database, 'productos'), (snapshot) => {
+                renderizarTabla(snapshot.val());
+            });
+        });
+
+        function renderizarTabla(productos) {
+            const tablaBody = document.getElementById('tabla-body');
+            tablaBody.innerHTML = "";
+
+            for (const key in productos) {
+                if (Object.hasOwnProperty.call(productos, key)) {
+                    const producto = productos[key];
+
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${producto.nombre}</td>
+                        <td>${producto.categoria}</td>
+                        <td>${producto.marca}</td>
+                        <td>${producto.descripcion}</td>
+                        <td>${producto.precio}</td>
+                        <td>${producto.cantidad}</td>
+                        <td>
+                            <button data-key="${key}" class="editar-btn">Editar</button>
+                            <button data-key="${key}" class="eliminar-btn">Eliminar</button>
+                        </td>
+                    `;
+
+                    fila.querySelector('.editar-btn').addEventListener('click', editarProducto);
+                    fila.querySelector('.eliminar-btn').addEventListener('click', eliminarProducto);
+
+                    tablaBody.appendChild(fila);
+                }
+            }
         }
     </script>
 </body>
