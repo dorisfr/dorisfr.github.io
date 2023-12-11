@@ -175,11 +175,11 @@
         };
 
         window.editarComputadora = function (key) {
-    const editarBtn = document.getElementById('btnEditar');
-    const actualizarBtn = document.getElementById('btnActualizar');
+        const editarBtn = document.getElementById('btnEditar');
+        const actualizarBtn = document.getElementById('btnActualizar');
 
-    const computadoraRef = ref(database, `Farinango/${key}`);
-    onValue(computadoraRef, (snapshot) => {
+        const computadoraRef = ref(database, `Farinango/${key}`);
+        onValue(computadoraRef, (snapshot) => {
         const computadora = snapshot.val();
 
         if (computadora) {
@@ -200,36 +200,36 @@
     });
 };
 
-window.actualizarComputadora = function () {
-    const editarBtn = document.getElementById('btnEditar');
-    const actualizarBtn = document.getElementById('btnActualizar');
+        window.actualizarComputadora = function () {
+        const editarBtn = document.getElementById('btnEditar');
+        const actualizarBtn = document.getElementById('btnActualizar');
 
-    const modelo = document.getElementById("modelo").value;
-    const marca = document.getElementById("marca").value;
-    const procesador = document.getElementById("procesador").value;
-    const almacenamiento = document.getElementById("almacenamiento").value;
-    const ram = document.getElementById("ram").value;
-    const precio = document.getElementById("precio").value;
-    const cantidad = document.getElementById("cantidad").value;
+        const modelo = document.getElementById("modelo").value;
+        const marca = document.getElementById("marca").value;
+        const procesador = document.getElementById("procesador").value;
+        const almacenamiento = document.getElementById("almacenamiento").value;
+        const ram = document.getElementById("ram").value;
+        const precio = document.getElementById("precio").value;
+        const cantidad = document.getElementById("cantidad").value;
 
-    // Obtener el key desde el botón "Actualizar"
-    const key = actualizarBtn.dataset.key;
+        // Obtener el key desde el botón "Actualizar"
+        const key = actualizarBtn.dataset.key;
 
-    const computadoraRef = ref(database, `Farinango/${key}`);
-    update(computadoraRef, {
-        modelo: modelo,
-        marca: marca,
-        procesador: procesador,
-        almacenamiento: almacenamiento,
-        ram: ram,
-        precio: precio,
-        cantidad: cantidad
-    });
+        const computadoraRef = ref(database, `Farinango/${key}`);
+        update(computadoraRef, {
+            modelo: modelo,
+            marca: marca,
+            procesador: procesador,
+            almacenamiento: almacenamiento,
+            ram: ram,
+            precio: precio,
+            cantidad: cantidad
+        });
 
-    // Después de actualizar, volver a mostrar el botón "Editar" y ocultar "Actualizar"
-    editarBtn.style.display = 'inline-block';
-    actualizarBtn.style.display = 'none';
-};
+        // Después de actualizar, volver a mostrar el botón "Editar" y ocultar "Actualizar"
+        editarBtn.style.display = 'inline-block';
+        actualizarBtn.style.display = 'none';
+    };
 
         window.eliminarComputadora = function (key) {
             const computadoraRef = ref(database, `Farinango/${key}`);
