@@ -250,33 +250,33 @@
             });
         });
 
-        window.renderizarTabla = function (computadoras) {
-            const tablaBody = document.getElementById('tabla-body');
-            tablaBody.innerHTML = "";
+            window.renderizarTabla = function (computadoras) {
+        const tablaBody = document.getElementById('tabla-body');
+        tablaBody.innerHTML = "";
 
-            for (const key in computadoras) {
-                if (Object.hasOwnProperty.call(computadoras, key)) {
-                    const computadora = computadoras[key];
+        for (const key in computadoras) {
+            if (Object.hasOwnProperty.call(computadoras, key)) {
+                const computadora = computadoras[key];
 
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${computadora.modelo}</td>
-                        <td>${computadora.marca}</td>
-                        <td>${computadora.procesador}</td>
-                        <td>${computadora.almacenamiento}</td>
-                        <td>${computadora.ram}</td>
-                        <td>${computadora.precio}</td>
-                        <td>${computadora.cantidad}</td>
-                        <td>
-                            <button data-key="${key}" class="editar-btn">Editar</button>
-                            <button data-key="${key}" class="eliminar-btn">Eliminar</button>
-                        </td>
-                    `;
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${computadora.modelo}</td>
+                    <td>${computadora.marca}</td>
+                    <td>${computadora.procesador}</td>
+                    <td>${computadora.almacenamiento}</td>
+                    <td>${computadora.ram}</td>
+                    <td>${computadora.precio}</td>
+                    <td>${computadora.cantidad}</td>
+                    <td>
+                        <button data-key="${key}" class="editar-btn" onclick="editarComputadora('${key}')">Editar</button>
+                        <button data-key="${key}" class="eliminar-btn" onclick="eliminarComputadora('${key}')">Eliminar</button>
+                    </td>
+                `;
 
-                    tablaBody.appendChild(fila);
-                }
+                tablaBody.appendChild(fila);
             }
-        };
+        }
+    };
     </script>
 </body>
 
