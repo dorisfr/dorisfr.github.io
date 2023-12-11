@@ -161,7 +161,7 @@
             const cantidad = document.getElementById("cantidad").value;
 
             push(
-                ref(database, 'computadoras'),
+                ref(database, 'Farinango'),
                 {
                     modelo: modelo,
                     marca: marca,
@@ -178,7 +178,7 @@
             const editarBtn = document.getElementById('btnEditar');
             const actualizarBtn = document.getElementById('btnActualizar');
 
-            const computadoraRef = ref(database, `computadoras/${key}`);
+            const computadoraRef = ref(database, `Farinango/${key}`);
             onValue(computadoraRef, (snapshot) => {
                 const computadora = snapshot.val();
 
@@ -210,7 +210,7 @@
             const precio = document.getElementById("precio").value;
             const cantidad = document.getElementById("cantidad").value;
 
-            const computadoraRef = ref(database, `computadoras/${key}`);
+            const computadoraRef = ref(database, `Farinango/${key}`);
             update(computadoraRef, {
                 modelo: modelo,
                 marca: marca,
@@ -227,7 +227,7 @@
         };
 
         window.eliminarComputadora = function (key) {
-            const computadoraRef = ref(database, `computadoras/${key}`);
+            const computadoraRef = ref(database, `Farinango/${key}`);
             remove(computadoraRef);
         };
 
@@ -245,18 +245,18 @@
                 }
             });
 
-            onValue(ref(database, 'computadoras'), (snapshot) => {
+            onValue(ref(database, 'Farinango'), (snapshot) => {
                 renderizarTabla(snapshot.val());
             });
         });
 
-            window.renderizarTabla = function (computadoras) {
+            window.renderizarTabla = function (Farinango) {
         const tablaBody = document.getElementById('tabla-body');
         tablaBody.innerHTML = "";
 
-        for (const key in computadoras) {
-            if (Object.hasOwnProperty.call(computadoras, key)) {
-                const computadora = computadoras[key];
+        for (const key in Farinango) {
+            if (Object.hasOwnProperty.call(Farinango, key)) {
+                const computadora = Farinango[key];
 
                 const fila = document.createElement('tr');
                 fila.innerHTML = `
