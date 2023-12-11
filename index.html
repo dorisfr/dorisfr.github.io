@@ -175,56 +175,61 @@
         };
 
         window.editarComputadora = function (key) {
-            const editarBtn = document.getElementById('btnEditar');
-            const actualizarBtn = document.getElementById('btnActualizar');
+    const editarBtn = document.getElementById('btnEditar');
+    const actualizarBtn = document.getElementById('btnActualizar');
 
-            const computadoraRef = ref(database, `Farinango/${key}`);
-            onValue(computadoraRef, (snapshot) => {
-                const computadora = snapshot.val();
+    const computadoraRef = ref(database, `Farinango/${key}`);
+    onValue(computadoraRef, (snapshot) => {
+        const computadora = snapshot.val();
 
-                if (computadora) {
-                    document.getElementById('modelo').value = computadora.modelo || '';
-                    document.getElementById('marca').value = computadora.marca || '';
-                    document.getElementById('procesador').value = computadora.procesador || '';
-                    document.getElementById('almacenamiento').value = computadora.almacenamiento || '';
-                    document.getElementById('ram').value = computadora.ram || '';
-                    document.getElementById('precio').value = computadora.precio || '';
-                    document.getElementById('cantidad').value = computadora.cantidad || '';
+        if (computadora) {
+            document.getElementById('modelo').value = computadora.modelo || '';
+            document.getElementById('marca').value = computadora.marca || '';
+            document.getElementById('procesador').value = computadora.procesador || '';
+            document.getElementById('almacenamiento').value = computadora.almacenamiento || '';
+            document.getElementById('ram').value = computadora.ram || '';
+            document.getElementById('precio').value = computadora.precio || '';
+            document.getElementById('cantidad').value = computadora.cantidad || '';
 
-                    // Ocultar el botón "Editar" y mostrar el botón "Actualizar"
-                    editarBtn.style.display = 'none';
-                    actualizarBtn.style.display = 'inline-block';
-                }
-            });
-        };
+            // Ocultar el botón "Editar" y mostrar el botón "Actualizar"
+            editarBtn.style.display = 'none';
+            actualizarBtn.style.display = 'inline-block';
+            // Establecer el key en el botón "Actualizar" para que sepa qué registro actualizar
+            actualizarBtn.dataset.key = key;
+        }
+    });
+};
 
-        window.actualizarComputadora = function (key) {
-            const editarBtn = document.getElementById('btnEditar');
-            const actualizarBtn = document.getElementById('btnActualizar');
+window.actualizarComputadora = function () {
+    const editarBtn = document.getElementById('btnEditar');
+    const actualizarBtn = document.getElementById('btnActualizar');
 
-            const modelo = document.getElementById("modelo").value;
-            const marca = document.getElementById("marca").value;
-            const procesador = document.getElementById("procesador").value;
-            const almacenamiento = document.getElementById("almacenamiento").value;
-            const ram = document.getElementById("ram").value;
-            const precio = document.getElementById("precio").value;
-            const cantidad = document.getElementById("cantidad").value;
+    const modelo = document.getElementById("modelo").value;
+    const marca = document.getElementById("marca").value;
+    const procesador = document.getElementById("procesador").value;
+    const almacenamiento = document.getElementById("almacenamiento").value;
+    const ram = document.getElementById("ram").value;
+    const precio = document.getElementById("precio").value;
+    const cantidad = document.getElementById("cantidad").value;
 
-            const computadoraRef = ref(database, `Farinango/${key}`);
-            update(computadoraRef, {
-                modelo: modelo,
-                marca: marca,
-                procesador: procesador,
-                almacenamiento: almacenamiento,
-                ram: ram,
-                precio: precio,
-                cantidad: cantidad
-            });
+    // Obtener el key desde el botón "Actualizar"
+    const key = actualizarBtn.dataset.key;
 
-            // Después de actualizar, volver a mostrar el botón "Editar" y ocultar "Actualizar"
-            editarBtn.style.display = 'inline-block';
-            actualizarBtn.style.display = 'none';
-        };
+    const computadoraRef = ref(database, `Farinango/${key}`);
+    update(computadoraRef, {
+        modelo: modelo,
+        marca: marca,
+        procesador: procesador,
+        almacenamiento: almacenamiento,
+        ram: ram,
+        precio: precio,
+        cantidad: cantidad
+    });
+
+    // Después de actualizar, volver a mostrar el botón "Editar" y ocultar "Actualizar"
+    editarBtn.style.display = 'inline-block';
+    actualizarBtn.style.display = 'none';
+};
 
         window.eliminarComputadora = function (key) {
             const computadoraRef = ref(database, `Farinango/${key}`);
