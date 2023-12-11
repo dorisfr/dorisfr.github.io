@@ -212,7 +212,6 @@
         const precio = document.getElementById("precio").value;
         const cantidad = document.getElementById("cantidad").value;
 
-        // Obtener el key desde el botón "Actualizar"
         const key = actualizarBtn.dataset.key;
 
         const computadoraRef = ref(database, `Farinango/${key}`);
@@ -226,7 +225,7 @@
             cantidad: cantidad
         });
 
-        // Después de actualizar, volver a mostrar el botón "Editar" y ocultar "Actualizar"
+        // al presinar editar, cambia el boton a "actualizar"
         editarBtn.style.display = 'inline-block';
         actualizarBtn.style.display = 'none';
     };
