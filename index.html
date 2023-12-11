@@ -134,7 +134,7 @@
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
         // Configuración de Firebase
-        // Your web app's Firebase configuration
+         // Your web app's Firebase configuration
             const firebaseConfig = {
               apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
               authDomain: "conexion-8ec0d.firebaseapp.com",
@@ -149,7 +149,7 @@
             const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        function agregarComputadora() {
+        window.agregarComputadora() {
             const modelo = document.getElementById("modelo").value;
             const marca = document.getElementById("marca").value;
             const procesador = document.getElementById("procesador").value;
@@ -159,7 +159,7 @@
             const cantidad = document.getElementById("cantidad").value;
 
             push(
-                ref(database, 'computadoras'),
+                ref(database, 'Farinango'),
                 {
                     modelo: modelo,
                     marca: marca,
@@ -172,7 +172,7 @@
             );
         }
 
-        function editarComputadora(key) {
+        window.editarComputadora(key) {
             const computadoraRef = ref(database, `computadoras/${key}`);
             onValue(computadoraRef, (snapshot) => {
                 const computadora = snapshot.val();
@@ -187,7 +187,7 @@
             });
         }
 
-        function eliminarComputadora(key) {
+        window.eliminarComputadora(key) {
             const computadoraRef = ref(database, `computadoras/${key}`);
             remove(computadoraRef);
         }
