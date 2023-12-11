@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VENTA DE COMPUTADORAS</title>
+    <title>COMPUTER SALES</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
-            background-image: url(https://img.freepik.com/psd-gratis/representacion-3d-fondo-ventas-elementos-90_23-2150742002.jpg?size=626&ext=jpg&ga=GA1.1.867424154.1698105600&semt=ais) ;
+            background-image: url(https://img.freepik.com/psd-gratis/representacion-3d-fondo-ventas-elementos-90_23-2150742002.jpg?size=626&ext=jpg&ga=GA1.1.867424154.1698105600&semt=ais);
             margin: 0;
             padding: 0;
         }
@@ -20,7 +21,8 @@
 
         #crud-form {
             max-width: 400px;
-            margin: auto; /* Centra el formulario */
+            margin: auto;
+            /* Centra el formulario */
             padding: 15px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -43,7 +45,7 @@
         }
 
         button {
-            background-color: #17A589 ;
+            background-color: #17A589;
             color: #fff;
             padding: 10px;
             border: none;
@@ -57,18 +59,20 @@
             border-collapse: collapse;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
 
         th {
-            background-color: #3498DB ;
+            background-color: #3498DB;
             color: #fff;
         }
 
-        .editar-btn, .eliminar-btn {
+        .editar-btn,
+        .eliminar-btn {
             background-color: #4caf50;
             color: #fff;
             padding: 5px 10px;
@@ -83,18 +87,16 @@
         }
     </style>
 </head>
+
 <body>
     <header class="cabecera">
         <section id="texto1">
             <div class="contenedor">
-                <a href="index.html" title="Página de inicio">
-                  
-                </a>
-                
+                <a href="index.html" title="Página de inicio"></a>
             </div>
         </section>
     </header>
-    <h1>VENTA DE COMPUTADORAS</h1>
+    <h1>COMPUTER SALES</h1>
     <form id="crud-form">
         <label for="modelo">Modelo de Computadora:</label>
         <input type="text" id="modelo"><br><br>
@@ -110,7 +112,7 @@
         <input type="number" id="precio" min="0" step="0.01" required><br><br>
         <label for="cantidad">Cantidad en Stock:</label>
         <input type="number" id="cantidad" min="0" required><br><br>
-        <button type="button" id="btnAgregar">Agregar Computadora</button>
+        <button type="button" id="btnAgregar" onclick="agregarComputadora()">Agregar Computadora</button>
     </form>
 
     <table>
@@ -133,9 +135,9 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
-        // Configuración de Firebase
-         // Your web app's Firebase configuration
-            const firebaseConfig = {
+        // Firebase configuration
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
               apiKey: "AIzaSyBMJsVpnbOwVOiVNbTZScZdet9qlGigDL0",
               authDomain: "conexion-8ec0d.firebaseapp.com",
               databaseURL: "https://conexion-8ec0d-default-rtdb.firebaseio.com",
@@ -146,10 +148,10 @@
             };
           
             // Initialize Firebase
-            const app = initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        function agregarComputadora() {
+        window.agregarComputadora = function () {
             const modelo = document.getElementById("modelo").value;
             const marca = document.getElementById("marca").value;
             const procesador = document.getElementById("procesador").value;
@@ -159,7 +161,7 @@
             const cantidad = document.getElementById("cantidad").value;
 
             push(
-                ref(database, 'Farinango'),
+                ref(database, 'computadoras'),
                 {
                     modelo: modelo,
                     marca: marca,
@@ -170,9 +172,9 @@
                     cantidad: cantidad
                 }
             );
-        }
+        };
 
-        function editarComputadora(key) {
+        window.editarComputadora = function (key) {
             const computadoraRef = ref(database, `computadoras/${key}`);
             onValue(computadoraRef, (snapshot) => {
                 const computadora = snapshot.val();
@@ -185,17 +187,14 @@
                 document.getElementById('precio').value = computadora?.precio || '';
                 document.getElementById('cantidad').value = computadora?.cantidad || '';
             });
-        }
+        };
 
-        function eliminarComputadora(key) {
+        window.eliminarComputadora = function (key) {
             const computadoraRef = ref(database, `computadoras/${key}`);
             remove(computadoraRef);
-        }
+        };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const btnAgregar = document.getElementById('btnAgregar');
-            btnAgregar.addEventListener('click', agregarComputadora);
-
+        window.addEventListener('DOMContentLoaded', () => {
             const tablaBody = document.getElementById('tabla-body');
             tablaBody.addEventListener('click', (event) => {
                 const target = event.target;
@@ -214,7 +213,7 @@
             });
         });
 
-        function renderizarTabla(computadoras) {
+        window.renderizarTabla = function (computadoras) {
             const tablaBody = document.getElementById('tabla-body');
             tablaBody.innerHTML = "";
 
@@ -240,7 +239,8 @@
                     tablaBody.appendChild(fila);
                 }
             }
-        }
+        };
     </script>
 </body>
+
 </html>
