@@ -150,97 +150,96 @@
             // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-
-        window.agregarComputadora = function () {
-            const modelo = document.getElementById("modelo").value;
-            const marca = document.getElementById("marca").value;
-            const procesador = document.getElementById("procesador").value;
-            const almacenamiento = document.getElementById("almacenamiento").value;
-            const ram = document.getElementById("ram").value;
-            const precio = document.getElementById("precio").value;
-            const cantidad = document.getElementById("cantidad").value;
-
-            push(
-                ref(database, 'computadoras'),
-                {
-                    modelo: modelo,
-                    marca: marca,
-                    procesador: procesador,
-                    almacenamiento: almacenamiento,
-                    ram: ram,
-                    precio: precio,
-                    cantidad: cantidad
-                }
-            );
-        };
-
         window.editarComputadora = function (key) {
-            const computadoraRef = ref(database, `computadoras/${key}`);
-            onValue(computadoraRef, (snapshot) => {
-                const computadora = snapshot.val();
+        const computadoraRef = ref(database, `computadoras/${key}`);
+        onValue(computadoraRef, (snapshot) => {
+            const computadora = snapshot.val();
 
-                document.getElementById('modelo').value = computadora?.modelo || '';
-                document.getElementById('marca').value = computadora?.marca || '';
-                document.getElementById('procesador').value = computadora?.procesador || '';
-                document.getElementById('almacenamiento').value = computadora?.almacenamiento || '';
-                document.getElementById('ram').value = computadora?.ram || '';
-                document.getElementById('precio').value = computadora?.precio || '';
-                document.getElementById('cantidad').value = computadora?.cantidad || '';
-            });
-        };
+            if (computadora) {
+                document.getElementById('modelo').value = computadora.modelo || '';
+                document.getElementById('marca').value = computadora.marca || '';
+                document.getElementById('procesador').value = computadora.procesador || '';
+                document.getElementById('almacenamiento').value = computadora.almacenamiento || '';
+                document.getElementById('ram').value = computadora.ram || '';
+                document.getElementById('precio').value = computadora.precio || '';
+                document.getElementById('cantidad').value = computadora.cantidad || '';
+            }
+        });
+    };
 
-        window.eliminarComputadora = function (key) {
-            const computadoraRef = ref(database, `computadoras/${key}`);
-            remove(computadoraRef);
-        };
+    window.actualizarComputadora = function (key) {
+        const modelo = document.getElementById("modelo").value;
+        const marca = document.getElementById("marca").value;
+        const procesador = document.getElementById("procesador").value;
+        const almacenamiento = document.getElementById("almacenamiento").value;
+        const ram = document.getElementById("ram").value;
+        const precio = document.getElementById("precio").value;
+        const cantidad = document.getElementById("cantidad").value;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const tablaBody = document.getElementById('tabla-body');
-            tablaBody.addEventListener('click', (event) => {
-                const target = event.target;
+        const computadoraRef = ref(database, `computadoras/${key}`);
+        update(computadoraRef, {
+            modelo: modelo,
+            marca: marca,
+            procesador: procesador,
+            almacenamiento: almacenamiento,
+            ram: ram,
+            precio: precio,
+            cantidad: cantidad
+        });
+    };
 
-                if (target.classList.contains('editar-btn')) {
-                    const key = target.dataset.key;
-                    editarComputadora(key);
-                } else if (target.classList.contains('eliminar-btn')) {
-                    const key = target.dataset.key;
-                    eliminarComputadora(key);
-                }
-            });
+    window.eliminarComputadora = function (key) {
+        const computadoraRef = ref(database, `computadoras/${key}`);
+        remove(computadoraRef);
+    };
 
-            onValue(ref(database, 'computadoras'), (snapshot) => {
-                renderizarTabla(snapshot.val());
-            });
+    window.addEventListener('DOMContentLoaded', () => {
+        const tablaBody = document.getElementById('tabla-body');
+        tablaBody.addEventListener('click', (event) => {
+            const target = event.target;
+
+            if (target.classList.contains('editar-btn')) {
+                const key = target.dataset.key;
+                editarComputadora(key);
+            } else if (target.classList.contains('eliminar-btn')) {
+                const key = target.dataset.key;
+                eliminarComputadora(key);
+            }
         });
 
-        window.renderizarTabla = function (computadoras) {
-            const tablaBody = document.getElementById('tabla-body');
-            tablaBody.innerHTML = "";
+        onValue(ref(database, 'computadoras'), (snapshot) => {
+            renderizarTabla(snapshot.val());
+        });
+    });
 
-            for (const key in computadoras) {
-                if (Object.hasOwnProperty.call(computadoras, key)) {
-                    const computadora = computadoras[key];
+    window.renderizarTabla = function (computadoras) {
+        const tablaBody = document.getElementById('tabla-body');
+        tablaBody.innerHTML = "";
 
-                    const fila = document.createElement('tr');
-                    fila.innerHTML = `
-                        <td>${computadora.modelo}</td>
-                        <td>${computadora.marca}</td>
-                        <td>${computadora.procesador}</td>
-                        <td>${computadora.almacenamiento}</td>
-                        <td>${computadora.ram}</td>
-                        <td>${computadora.precio}</td>
-                        <td>${computadora.cantidad}</td>
-                        <td>
-                            <button data-key="${key}" class="editar-btn">Editar</button>
-                            <button data-key="${key}" class="eliminar-btn">Eliminar</button>
-                        </td>
-                    `;
+        for (const key in computadoras) {
+            if (Object.hasOwnProperty.call(computadoras, key)) {
+                const computadora = computadoras[key];
 
-                    tablaBody.appendChild(fila);
-                }
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${computadora.modelo}</td>
+                    <td>${computadora.marca}</td>
+                    <td>${computadora.procesador}</td>
+                    <td>${computadora.almacenamiento}</td>
+                    <td>${computadora.ram}</td>
+                    <td>${computadora.precio}</td>
+                    <td>${computadora.cantidad}</td>
+                    <td>
+                        <button data-key="${key}" class="editar-btn">Editar</button>
+                        <button data-key="${key}" class="eliminar-btn">Eliminar</button>
+                    </td>
+                `;
+
+                tablaBody.appendChild(fila);
             }
-        };
-    </script>
+        }
+    };
+</script>
 </body>
 
 </html>
